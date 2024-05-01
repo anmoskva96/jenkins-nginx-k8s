@@ -13,7 +13,7 @@ pipeline {
                 script {
                     def helmReleaseName = 'nginx'
 
-                    sh "helm install ${helmReleaseName} nginx-chart-v1/
+                    sh "helm install ${helmReleaseName} nginx-chart-v1
 
                     sleep time: 60
 
