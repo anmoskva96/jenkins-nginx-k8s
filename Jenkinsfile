@@ -13,10 +13,9 @@ pipeline {
                 sh 'curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3'
                 sh 'chmod 700 get_helm.sh'
                 sh './get_helm.sh'
-                sh 'helm version'
-
-                sleep time: 10
             }
+        }
+
 
         stage('Deploy Helm chart') {
             steps {
@@ -25,7 +24,7 @@ pipeline {
 
                     sh "helm install ${helmReleaseName} nginx-chart-v1/"
 
-                    sleep time: 10
+                    sleep time: 60
 
                     sh "kubectl port-forward svc/nginx-service 32080:80 &"
 
