@@ -11,7 +11,7 @@ pipeline {
         stage('Deploy Helm chart') {
             steps {
                 script {
-                    sh "helm install nginx nginx-chart-v1/"
+                    sh "helm install nginx jenkins-nginx-k8s/nginx-chart-v1/"
 
                     sleep time: 60
 
