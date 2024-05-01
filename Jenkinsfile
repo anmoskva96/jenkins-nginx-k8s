@@ -12,9 +12,8 @@ pipeline {
             steps {
                 script {
                     def helmReleaseName = 'nginx'
-                    def helmNamespace = 'default'
 
-                    sh "helm install ${helmReleaseName} nginx-chart-v1/ --namespace ${helmNamespace}"
+                    sh "helm install ${helmReleaseName} nginx-chart-v1/
 
                     sleep time: 60
 
