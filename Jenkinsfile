@@ -8,23 +8,10 @@ pipeline {
             }
         }
 
-        stage('Install Helm') {
-            steps {
-                sh 'curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null'
-                sh 'apt-get install apt-transport-https --yes'
-                sh 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list'
-                sh 'apt-get update'
-                sh 'apt-get install helm'
-            }
-        }
-
-
         stage('Deploy Helm chart') {
             steps {
                 script {
-                    def helmReleaseName = 'nginx'
-
-                    sh "helm install ${helmReleaseName} nginx-chart-v1/"
+                    sh "helm install nginx nginx-chart-v1/"
 
                     sleep time: 60
 
