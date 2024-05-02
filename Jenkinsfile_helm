@@ -12,6 +12,8 @@ pipeline {
         stage('Helm install') {
             steps {
                 script {
+                    sh "pwd"
+                    sh "ls"
                     sh "chmod +x jenkins-nginx-k8s/helm-kubectl/helm"
                     sh "mkdir -p ~/.local/bin"
                     sh "mv jenkins-nginx-k8s/helm-kubectl/helm /usr/local/bin/"
