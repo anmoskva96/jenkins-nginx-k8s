@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone repository') {
             steps {
                 git 'https://github.com/anmoskva96/jenkins-nginx-k8s.git'
