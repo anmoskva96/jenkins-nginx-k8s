@@ -4,4 +4,4 @@ image       :
   tag       : latest
 
 service     :
-  type      : ClusterIP
+  type      : NodePort
