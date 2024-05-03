@@ -240,4 +240,34 @@ git add README.md
 git commit -m "README.md"
 git push origin master
 ```
+***
 
+Выполнив выше указанные действия, Helm chart с помощью Jenkins запустился, но завершился с ошибкой:
+
+```
++ echo ----------START JOB----------
+----------START JOB----------
++ echo ----------INSTALL HELM----------
+----------INSTALL HELM----------
++ curl -fsSL -o helm.tar.gz https://get.helm.sh/helm-v3.7.1-linux-amd64.tar.gz
++ tar -zxvf helm.tar.gz
+linux-amd64/
+linux-amd64/helm
+linux-amd64/LICENSE
+linux-amd64/README.md
++ mkdir -p /home/jenkins/bin
++ mv linux-amd64/helm /home/jenkins/bin/helm
++ export PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/jenkins/bin
++ helm version
+version.BuildInfo{Version:"v3.7.1", GitCommit:"1d11fcb5d3f3bf00dbe6fe31b8412839a96b3dc4", GitTreeState:"clean", GoVersion:"go1.16.9"}
++ echo ----------START HELM CHART----------
+----------START HELM CHART----------
++ helm install nginx nginx-chart-v1
+Error: INSTALLATION FAILED: rendered manifests contain a resource that already exists. Unable to continue with install: could not get information about the resource: services "nginx-service" is forbidden: User "system:serviceaccount:jenkins:default" cannot get resource "services" in API group "" in the namespace "jenkins"
+Build step 'Execute shell' marked build as failure
+Finished: FAILURE
+```
+
+Насколько я понял, пользователь Jenkins имеет недостаточные права для выполнения операций в k8s
+
+Решение данной проблемы я не смог найти
