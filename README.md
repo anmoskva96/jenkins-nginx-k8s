@@ -1,5 +1,7 @@
 # Задание на DevOps
 ***
+#### OWNER = Москвин А.Н.
+***
 ## Part 1. Развернуть minikube
 ### 1.1 Установка и запуск minikube на Ubuntu 20.04.6 LTS
 
@@ -198,7 +200,44 @@ helm install nginx nginx-chart-v1
 
 ```
 
+> Пояснение: Когда Jenkins начинает выполнять Job, он создает Pod с контейнером, к котором нет helm. Поэтому необходимо установить helm, чтобы наш чарт смог успешно выполниться. Я написал команды для скачивания и установки инструмента helm
+
 После этого нужно нажать __Сохранить__
 
 ## 5 В Git репозиторий добавить Helm чарт
+
+Я нахожусь в директории __/home/lemuelge/github/jenkins-nginx-k8s__. Это директория, из которой я буду делать пуш Helm чарт.
+
+Стркуктура каталогов и файлов следующая:
+
+```
+├── nginx-chart-v1
+│   ├── charts
+│   ├── Chart.yaml
+│   ├── templates
+│   │   ├── deployment.yaml
+│   │   └── service.yaml
+│   └── values.yaml
+└── README.md
+
+3 directories, 5 files
+```
+
+Для добавления Helm чарт я использую команды:
+
+```
+git add nginx-chart-v1
+git commit -m "Helm chart"
+git push origin master
+```
+
+## 6 В Git репозиторий добавить файл Readme.md, где описан процесс запуска Minikube с Jenkins и процесс создания Job для Nginx
+
+Выполним push README.md аналогичко п.5:
+
+```
+git add README.md
+git commit -m "README.md"
+git push origin master
+```
 
