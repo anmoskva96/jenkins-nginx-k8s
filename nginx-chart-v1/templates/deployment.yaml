@@ -18,5 +18,5 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
-            - name: https
+            - name: http
               containerPort: 80
