@@ -128,7 +128,8 @@ kubectl get pods
 ```
 helm repo add jenkins https://charts.jenkins.io
 helm repo update
-helm install jenkins -n jenkins jenkins/jenkins
+kubectl create namespace jenkins
+helm install jenkins jenkins/jenkins --namespace jenkins
 ```
 
 После выполнения данных команд появится сообщение:
