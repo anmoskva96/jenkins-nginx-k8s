@@ -1,17 +1,18 @@
 # Задание на DevOps
-***
-#### OWNER = Москвин А.Н.
+
+
 ***
 ## Part 1. Развернуть minikube
+
 ### 1.1 Установка и запуск minikube на Ubuntu 20.04.6 LTS
 
-___Примечание:__ Перед установкой minikube на локальной машине должны быть установлены kubectl и Hypervisor. В моем случае они установлены, Hypervisor использую VirtualBox_  
+> Примечание: Перед установкой minikube на локальной машине должны быть установлены kubectl и Hypervisor. В моем случае они установлены, Hypervisor использую VirtualBox
 
 Для установки minikube воспользуемся документацией на сайте https://kubernetes.io/ru/docs/tasks/tools/install-minikube/
 
 Я установил minikube с помощью прямой ссылки.
 
-Запустим minikube с помощью команды `minikube start --vm-driver=virtualbox --cpus 2 --memory 2048 --disk-size 10g`
+Запустим minikube с помощью команды `minikube start --vm-driver=virtualbox --cpus 2 --memory 4096 --disk-size 15g`
 
 ## Part 2. Написать Helm чарт, который устанавливает последнюю версию Nginx, должен быть доступен по порту 32080 на ноде Kubernetes
 
@@ -21,7 +22,7 @@ ___Примечание:__ Перед установкой minikube на лок�
 
 Я воспользовался следующими командами:
 
-```
+```bash
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
 
 sudo apt-get install apt-transport-https --yes
@@ -42,7 +43,7 @@ sudo apt-get install helm
 
 Содержимое файла __values.yaml:__
 
-```
+```yaml
 replicaCount: 2
 image       :
   repository: nginx
@@ -54,7 +55,7 @@ service     :
 
 Содержимое файла __Chart.yaml:__
 
-```
+```yaml
 apiVersion : v2
 name       : nginx-chart-v1
 description: A Helm chart for Kubernetes
@@ -65,7 +66,7 @@ appVersion : "1.16.0"
 
 Содержимое файла __deployment.yaml:__
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -92,7 +93,7 @@ spec:
 
 Содержимое файла __service.yaml:__
 
-```
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -113,7 +114,7 @@ spec:
 
 Можно проверить, что всё успешно запустилось, через следующие команды:
 
-```
+```bash
 kubectl get svc
 kubectl get deploy
 kubectl get pods
@@ -125,7 +126,7 @@ kubectl get pods
 
 Чтобы развернуть Jenkins, нужно воспользоваться следующими командами:
 
-```
+```bash
 helm repo add jenkins https://charts.jenkins.io
 helm repo update
 kubectl create namespace jenkins
@@ -134,26 +135,27 @@ helm install jenkins jenkins/jenkins --namespace jenkins
 
 После выполнения данных команд появится сообщение:
 
-> NAME: jenkins
-> LAST DEPLOYED: Fri May  3 11:10:05 2024
-> NAMESPACE: jenkins
-> STATUS: deployed
-> REVISION: 1
-> NOTES:
-> 1. Get your 'admin' user password by running:
-  kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/additional/chart-admin-password && echo
-> 2. Get the Jenkins URL to visit by running these commands in the same shell:
-  echo http://127.0.0.1:8080
-  kubectl --namespace jenkins port-forward svc/jenkins 8080:8080
-> 3. Login with the password from step 1 and the username: admin
-> 4. Configure security realm and authorization strategy
-> 5. Use Jenkins Configuration as Code by specifying configScripts in your values.yaml file, see documentation: http://127.0.0.1:8080/configuration-as-code and examples: https://github.com/jenkinsci/configuration-as-code-plugin/tree/master/demos
-> 
-> For more information on running Jenkins on Kubernetes, visit:
+```bash
+NAME: jenkins
+LAST DEPLOYED: Fri May  3 11:10:05 2024
+NAMESPACE: jenkins
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get your 'admin' user password by running:
+kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/additional/chart-admin-password && echo
+2. Get the Jenkins URL to visit by running these commands in the same shell:
+echo http://127.0.0.1:8080
+kubectl --namespace jenkins port-forward svc/jenkins 8080:8080
+3. Login with the password from step 1 and the username: admin
+4. Configure security realm and authorization strategy
+5. Use Jenkins Configuration as Code by specifying configScripts in your values.yaml file, see documentation: http://127.0.0.1:8080/configuration-as-code and examples: https://github.com/jenkinsci/configuration-as-code-plugin/tree/master/demos
+For more information on running Jenkins on Kubernetes, visit:
 https://cloud.google.com/solutions/jenkins-on-container-engine
-> For more information about Jenkins Configuration as Code, visit:
+For more information about Jenkins Configuration as Code, visit:
 https://jenkins.io/projects/jcasc/
-> NOTE: Consider using a custom image with pre-installed plugins
+NOTE: Consider using a custom image with pre-installed plugins
+```
 
 Нужно подождать, пока все поды Jenkins будут готовы. Проверить STATUS можно командой `kubectl get pods -n jenkins`. Статус должен быть __Running__
 
@@ -183,7 +185,7 @@ https://jenkins.io/projects/jcasc/
 
 Теперь необходимо вписать команды, которые будет выполнять Jenkins:
 
-```
+```bash
 echo "----------START JOB----------"
 
 echo "----------INSTALL HELM----------"
@@ -211,7 +213,7 @@ helm install nginx nginx-chart-v1
 
 Стркуктура каталогов и файлов следующая:
 
-```
+```bash
 ├── nginx-chart-v1
 │   ├── charts
 │   ├── Chart.yaml
@@ -226,7 +228,7 @@ helm install nginx nginx-chart-v1
 
 Для добавления Helm чарт я использую команды:
 
-```
+```bash
 git add nginx-chart-v1
 git commit -m "Helm chart"
 git push origin master
@@ -236,7 +238,7 @@ git push origin master
 
 Выполним push README.md аналогичко п.5:
 
-```
+```bash
 git add README.md
 git commit -m "README.md"
 git push origin master
@@ -245,7 +247,7 @@ git push origin master
 
 Выполнив выше указанные действия, Helm chart с помощью Jenkins запустился, но завершился с ошибкой:
 
-```
+```bash
 + echo ----------START JOB----------
 ----------START JOB----------
 + echo ----------INSTALL HELM----------
